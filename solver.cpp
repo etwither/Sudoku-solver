@@ -2,11 +2,13 @@
 #include <random>
 #include <vector>
 #include <algorithm>
+#include <time.h>
 using namespace std;
 
 #define N 9
 
-void create(int puzzle[N][N]);
+void create(int puzzle[N][N], char dif);
+void remove(int puzzle[N][N], int rAmount);
 void const printP(int puzzle[N][N]);
 bool solve(int puzzle[N][N]);
 bool getEmpty(int puzzle[N][N], int &col, int &row);
@@ -15,7 +17,7 @@ bool isSafe(int num, int puzzle[N][N], int col, int row);
 int main(){
   int puzzle[N][N];
   
-  create(puzzle);
+  create(puzzle, 'H');
   
   //solve(puzzle);
   
@@ -24,7 +26,7 @@ int main(){
 
 //creates a puzzle for the program to solve
 //TODO: add difficulty
-void create(int puzzle[N][N]){
+void create(int puzzle[N][N], char dif){
 
   vector<int> numbers = {1,2,3,4,5,6,7,8,9};
   random_device rd;
@@ -55,7 +57,28 @@ void create(int puzzle[N][N]){
   
   solve(puzzle);
   
-  cout << "New puzzle:\n";
+  //remove x amount of spots based on difficulty
+  if(dif == 'E'){
+    remove(puzzle, 45);
+  }
+  else if(dif == 'M'){
+    remove(puzzle, 55);
+  }
+  else if(dif == 'H'){
+    remove(puzzle, 75);
+  }
+}
+
+//changes spots back to empty
+void remove(int puzzle[N][N], int rAmount){
+  //seed ramdom
+  srand(time(0));
+  
+  //change random spot back to 0
+  for(int i=0; i<rAmount; i++){
+    puzzle[(rand()%8)+1][(rand()%8)+1] = 0;
+  }
+  
   printP(puzzle);
 }
 
