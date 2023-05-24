@@ -1,6 +1,7 @@
 #include <iostream>
-//#include <random>
-//#include <algorithm>
+#include <random>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
 #define N 9
@@ -16,15 +17,22 @@ int main(){
   
   create(puzzle);
   
-  solve(puzzle);
+  //solve(puzzle);
   
   return 0;
 }
 
 //creates a puzzle for the program to solve
-//TODO: create random generator
+//TODO: add difficulty
 void create(int puzzle[N][N]){
 
+  vector<int> numbers = {1,2,3,4,5,6,7,8,9};
+  random_device rd;
+  mt19937 rng(rd());
+  shuffle(numbers.begin(), numbers.end(), rng);
+  
+  int temp;
+  
   //set every spot to zero
   for(int i=0; i<N; i++){
     for(int j=0; j<N; j++){
@@ -32,37 +40,20 @@ void create(int puzzle[N][N]){
     }
   }
   
-  //already solved spots
-  puzzle[0][0] = 5;
-  puzzle[0][1] = 3;
-  puzzle[0][4] = 7;
-  puzzle[1][0] = 6;
-  puzzle[1][3] = 1;
-  puzzle[1][4] = 9;
-  puzzle[1][5] = 5;
-  puzzle[2][1] = 9;
-  puzzle[2][2] = 8;
-  puzzle[2][7] = 6;
-  puzzle[3][0] = 8;
-  puzzle[3][4] = 6;
-  puzzle[3][8] = 3;
-  puzzle[4][0] = 4;
-  puzzle[4][3] = 8;
-  puzzle[4][5] = 3;
-  puzzle[4][8] = 1;
-  puzzle[5][0] = 7;
-  puzzle[5][4] = 2;
-  puzzle[5][8] = 6;
-  puzzle[6][1] = 6;
-  puzzle[6][6] = 2;
-  puzzle[6][7] = 8;
-  puzzle[7][3] = 4;
-  puzzle[7][4] = 1;
-  puzzle[7][5] = 9;
-  puzzle[7][8] = 5;
-  puzzle[8][4] = 8;
-  puzzle[8][7] = 7;
-  puzzle[8][8] = 9;
+  for(int i=0; i<N; i=i+3){
+    for(int j=0; j<N; j++){
+      if(isSafe(numbers[j], puzzle, j, i)){
+        puzzle[i][j] = numbers[j];
+      }
+    }
+    for(int k=0; k<3; k++){
+      temp = numbers[8];
+      numbers.pop_back();
+      numbers.insert(numbers.begin(), temp);
+    }
+  }
+  
+  solve(puzzle);
   
   cout << "New puzzle:\n";
   printP(puzzle);
@@ -91,8 +82,6 @@ bool solve(int puzzle[N][N]){
   
   //finds the next empty (0) spot
   if(!getEmpty(puzzle, col, row)){
-    cout << "solution:\n";
-    printP(puzzle);
     return true; //no empty spots, puzzle is solved
   }
   
