@@ -3,10 +3,12 @@
 #include <vector>
 #include <algorithm>
 #include <time.h>
+#include <string>
 using namespace std;
 
 #define N 9
 
+char const text();
 void create(int puzzle[N][N], char dif);
 void remove(int puzzle[N][N], int rAmount);
 void const printP(int puzzle[N][N]);
@@ -17,15 +19,30 @@ bool isSafe(int num, int puzzle[N][N], int col, int row);
 int main(){
   int puzzle[N][N];
   
-  create(puzzle, 'H');
+  create(puzzle, text());
   
   //solve(puzzle);
   
   return 0;
 }
 
+//asks for level of difficulty
+char const text(){
+  string choice;
+  //loops until it gets the correct input
+  while(1){
+    cout << "Enter your difficulty level (E, M, H): ";
+    cin >> choice;
+    choice[0] = toupper(choice[0]);
+    if((choice[0] == 'E' || choice[0] == 'M' || choice[0] == 'H') && choice.length() == 1){
+      return choice[0];
+    }
+    
+    cout << "ERROR: Invalid input\n\n";
+  }
+}
+
 //creates a puzzle for the program to solve
-//TODO: add difficulty
 void create(int puzzle[N][N], char dif){
 
   vector<int> numbers = {1,2,3,4,5,6,7,8,9};
