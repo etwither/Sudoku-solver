@@ -20,8 +20,15 @@ int main(){
   int puzzle[N][N];
   
   create(puzzle, text());
+  cout << "New Puzzle:\n";
+  printP(puzzle);
   
-  //solve(puzzle);
+  string temp;
+  cout << "Enter anything to see solution: ";
+  cin >> temp;
+  solve(puzzle);
+  cout << "Solution:\n";
+  printP(puzzle);
   
   return 0;
 }
@@ -95,8 +102,6 @@ void remove(int puzzle[N][N], int rAmount){
   for(int i=0; i<rAmount; i++){
     puzzle[(rand()%8)+1][(rand()%8)+1] = 0;
   }
-  
-  printP(puzzle);
 }
 
 //print out sudoku puzzle
